@@ -703,7 +703,12 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
 
   // flush receive buffer before transmitting request
   while (_serial->read() != -1);
-
+  //NK added the follwing three lines:
+  digitalWrite(m_DE, HIGH);
+  digitalWrite(m_RE, HIGH);
+  delay(100);
+  //end NK add
+  // 
   // transmit request
   if (_preTransmission)
   {
@@ -716,6 +721,12 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
   
   u8ModbusADUSize = 0;
   _serial->flush();    // flush transmit buffer
+
+    // NK added the following two lines
+  digitalWrite(m_DE, LOW);
+  digitalWrite(m_RE, LOW);
+  // end NK add
+
   if (_postTransmission)
   {
     _postTransmission();
@@ -873,4 +884,16 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
   u16TransmitBufferLength = 0;
   _u8ResponseBufferIndex = 0;
   return u8MBStatus;
+}
+
+void ModbusMaster::SetPins(uint32_t DE, uint32_t RE)
+{
+    m_DE = DE;
+    m_RE = RE;
+    pinMode(DE, OUTPUT);
+    pinMode(RE, OUTPUT);
+    
+    digitalWrite(DE, LOW);
+    digitalWrite(RE, LOW);
+    
 }
