@@ -599,6 +599,7 @@ Sequence:
 */
 uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
 {
+   
   uint8_t u8ModbusADU[256];
   uint8_t u8ModbusADUSize = 0;
   uint8_t i, u8Qty;
@@ -765,8 +766,10 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
     if (u8ModbusADUSize == 5)
     {
       // verify response is for correct Modbus slave
-      if (u8ModbusADU[0] != _u8MBSlave)
+        if (u8ModbusADU[0] != _u8MBSlave)
       {
+          
+          
         u8MBStatus = ku8MBInvalidSlaveID;
         break;
       }
@@ -883,6 +886,7 @@ uint8_t ModbusMaster::ModbusMasterTransaction(uint8_t u8MBFunction)
   _u8TransmitBufferIndex = 0;
   u16TransmitBufferLength = 0;
   _u8ResponseBufferIndex = 0;
+
   return u8MBStatus;
 }
 
